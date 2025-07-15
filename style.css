@@ -69,7 +69,7 @@ body {
     gap: 2rem;
     max-width: 1200px;
     margin: 4rem auto;
-    padding: 0 2rem;
+    padding: 3rem 2rem 2rem;
     perspective: 1000px;
 }
 
@@ -77,7 +77,10 @@ header {
     grid-column: 1 / -1;
     text-align: center;
     transform-style: preserve-3d;
-    /* animation: float 6s ease-in-out infinite; */
+    animation: float 6s ease-in-out infinite;
+    scroll-margin-top: 80px;
+    position: relative;
+    z-index: 1;
 }
 
 .info-text {
@@ -109,11 +112,11 @@ header {
 
     0%,
     100% {
-        transform: translateY(0) rotateX(2deg);
+        transform: translateY(0px) rotateX(0deg);
     }
 
     50% {
-        transform: translateY(-20px) rotateX(-2deg);
+        transform: translateY(-10px) rotateX(5deg);
     }
 }
 
@@ -131,12 +134,14 @@ h1 {
     flex-direction: column;     /* Ensures elements are stacked vertically */
     gap: 2rem;      /* Adds space between elements inside the card */
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px) saturate(180%);
     border-radius: 24px;
     padding: 2rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.25);
 }
 
 .card:hover {
@@ -153,13 +158,26 @@ h1 {
 .file-input-wrapper {
     position: relative;
     height: 200px;
-    border: 2px dashed var(--primary-color);
+    border: 2px solid transparent;
     border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background: linear-gradient(var(--background), var(--background)) padding-box, linear-gradient(135deg, #6366f1, #a855f7) border-box;
+    transition: all 0.3s ease;
 }
+
+.file-input-wrapper.uploaded {
+    animation: pulse 1.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
 .file-name-display {
     margin-top: 0.5rem;
     color: var(--primary-color);
@@ -200,6 +218,11 @@ h1 {
     overflow: hidden;
 }
 
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+}
+
 .button::before {
     content: '';
     position: absolute;
@@ -223,6 +246,37 @@ h1 {
     animation: fadeIn 0.5s ease-out;
 }
 
+#qrcode canvas {
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+    transition: all 0.3s ease;
+}
+
+#qrcode:hover canvas {
+    transform: scale(1.02);
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+}
+
+.particles {
+    animation: particles-float 20s ease-in-out infinite;
+}
+
+@keyframes particles-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.loading {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -243,22 +297,96 @@ footer {
     backdrop-filter: blur(12px);
     border-radius: 16px;
     margin-top: 2rem;
+   
+}
+.footer-content{
+    max-width: 1200px;
+    margin:0 auto;
+}
+.iwoc-text{
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+.github{
+    margin-top: 15px;
+
+}
+
+.footer-content a {
+    position: relative;
+    transition: all 0.3s ease;
 }
 
 footer a {
     color: var(--primary-color);
     text-decoration: none;
     transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.footer-card {
+    display: flex;
+    flex-direction:column;     /* Ensures elements are stacked vertically */
+    gap: 2rem;      /* Adds space between elements inside the card */
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+   
+}
+
+.footer-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 48px rgba(99, 102, 241, 0.2);
 }
 
 footer a:hover {
     color: #a855f7;
 }
 
+.footer-content a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.footer-content a:hover::after {
+    width: 100%;
+}
+
 @media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+      
+    .info-text {
+        font-size: 0.9rem;
+    }
+
     .container {
         grid-template-columns: 1fr;
     }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+  
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+  
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
 }
 
 /* Navbar Styles */
@@ -267,11 +395,12 @@ footer a:hover {
     top: 0;
     left: 0;
     width: 100%;
+    height: 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.2rem 0rem;
-    background: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     z-index: 1000;
 }
@@ -288,6 +417,12 @@ footer a:hover {
     width: 70px;
     height: 70px;
     border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.navbar-logo:hover img {
+    transform: rotate(15deg) scale(1.1);
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.4));
 }
 
 /* Theme Toggle Button */
@@ -331,4 +466,50 @@ footer a:hover {
         font-size: 1rem;
         margin-top: -8px;
     }
+}
+
+#scrollBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #1c85f5;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+#scrollBtn:hover {
+    background-color: #0056b3;
+    transform: scale(1.03);
+}
+dialog {
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+#closeDialogBtn {
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#closeDialogBtn:hover {
+    background-color:  #3c3fef;
 }
